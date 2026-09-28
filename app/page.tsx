@@ -10,7 +10,10 @@ export default async function HomePage() {
   return (
     <main>
       <h1>Nav Dekoratøren status</h1>
-      <p>Referanseimplementasjon for de fire støttede integrasjonsmåtene.</p>
+      <p>
+        Eksempler på integrasjon med Dekoratøren: SSR og CSR, med og uten
+        modulpakken, samt tester av parametere og funksjoner.
+      </p>
       <nav aria-label="Integrasjoner">
         <IntegrasjonsOversikt ssrHelse={ssrHelse} />
       </nav>

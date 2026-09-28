@@ -91,12 +91,14 @@ export default async function ParametrePage() {
         <li>❌ avvik, se feilmelding-kolonnen</li>
       </ul>
       <p>
-        <strong>NB!</strong> Status-ikonet for CSR gjelder testene i
-        hovedlisten. Testene for «Forenklede visninger»,
-        «setParams/getParams», «onBreadcrumbClick/onLanguageSelect» og
-        «openChatbot» kjøres i egne visninger og er ikke med i den samlede
-        statusen – gå inn på CSR og følg lenkene for å se om de er som
-        forventet.
+        <strong>NB!</strong> Statusikonene for SSR og CSR gjelder testene i
+        hovedlistene. SSR-testen for <code>addDecoratorUpdateListener</code>{" "}
+        kjøres i en egen visning og inngår ikke i SSR-statusen. CSR-testene for
+        <code>Forenklede visninger</code>, <code>setParams/getParams</code>,
+        <code>onBreadcrumbClick/onLanguageSelect</code> og{" "}
+        <code>openChatbot</code> kjøres i egne visninger og inngår ikke i
+        CSR-statusen. Gå inn på SSR eller CSR og følg lenkene for å se
+        resultatene.
       </p>
 
       <ParametreOversikt

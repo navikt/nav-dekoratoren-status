@@ -9,7 +9,7 @@ fire integrasjonsmåtene mot Dekoratøren fungerer som forventet.
 | Rute                                 | Hva den demonstrerer                                                  |
 | ------------------------------------ | --------------------------------------------------------------------- |
 | `/ssr-med-moduler`                   | Server-side rendering med `fetchDecoratorReact` fra modulpakken       |
-| `/ssr-uten-moduler`                  | Server-side rendering med direkte kall til `/ssr`                     |
+| `/ssr-uten-moduler`                  | Server-side rendering uten moduler via `/ssr`                         |
 | `/csr-med-moduler`                   | Client-side rendering med `injectDecoratorClientSide`                 |
 | `/csr-uten-moduler`                  | Client-side rendering med CSS, `/env` og `client.js` uten modulpakken |
 | `/parametre`                         | Levende SSR- og CSR-tester av Dekoratør-parametere                    |
@@ -33,8 +33,8 @@ Statusappen er tilgjengelig kun for Nav-ansatte:
 | Prod  | `https://nav-dekoratoren-status.ansatt.nav.no`     | `http://nav-dekoratoren.personbruker` | `https://www.nav.no/dekoratoren`         |
 
 SSR-rutene bruker service discovery i riktig Nais-cluster. CSR-rutene kjører i nettleseren og
-bruker derfor Dekoratørens offentlige ingress for miljøet. Direkte SSR sender eksplisitt
-`teamName=navno.navno`; modulpakken identifiserer selv opprinnelsen.
+bruker derfor Dekoratørens offentlige ingress for miljøet. SSR uten moduler sender eksplisitt
+`teamName=nav-dekoratoren-status.navno`; modulpakken identifiserer selv opprinnelsen.
 
 ### Parametertester (`/parametre`)
 
@@ -87,6 +87,18 @@ brukerdata eller Dekoratørens auth-data leses, lagres eller logges.
 
 ## Lokal utvikling
 
+For `/ssr-uten-moduler` kan `SSR_UTEN_MODULER_TEAM_NAME` settes før appen startes på nytt:
+
+| Verdi      | Forventet i Dekoratørens logg for `/ssr`                                       |
+| ---------- | ------------------------------------------------------------------------------ |
+| Ikke satt  | `consumer: teamName: nav-dekoratoren-status.navno`, `requestType: ssr`                    |
+| `MittTeam` | «Ugyldig teamName …», deretter «Kunne ikke identifisere … SSR-forespørselen …» |
+| Tom streng | «Kunne ikke identifisere … SSR-forespørselen …»                                |
+
+Start appen med `SSR_UTEN_MODULER_TEAM_NAME=MittTeam pnpm dev` for ugyldig verdi, eller
+`SSR_UTEN_MODULER_TEAM_NAME='' pnpm dev` for manglende verdi. I dev må variabelen settes i appens miljø
+før appen startes på nytt.
+
 Installer private pakker med pnpm, GitHub Packages og en token med `read:packages`:
 
 ```bash
@@ -96,7 +108,7 @@ pnpm dev
 ```
 
 Lokalt brukes den offentlige dev-ingressen for Dekoratøren. I Nais dev-gcp brukes intern service
-discovery for direkte SSR-kall. `pnpm typecheck`, `pnpm test` og `pnpm test:e2e` er tilgjengelige
+discovery for SSR uten moduler. `pnpm typecheck`, `pnpm test` og `pnpm test:e2e` er tilgjengelige
 for validering.
 
 ## CI og deploy

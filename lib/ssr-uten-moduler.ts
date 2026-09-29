@@ -1,9 +1,12 @@
-import { decoratorParams, teamName } from "./decorator-params";
+import { decoratorParams } from "./decorator-params";
 import { ssrUtenModulerUrl } from "./decorator-config";
 
 export { ssrUtenModulerUrl };
 
-export type DirectSsrFragments = {
+export const ssrUtenModulerTeamName =
+  process.env.SSR_UTEN_MODULER_TEAM_NAME ?? "nav-dekoratoren-status.navno";
+
+export type SsrUtenModulerFragments = {
   DECORATOR_HEAD_ASSETS: string;
   DECORATOR_HEADER: string;
   DECORATOR_FOOTER: string;
@@ -25,12 +28,13 @@ function isRawSsrResponse(value: unknown): value is RawSsrResponse {
   );
 }
 
-export async function fetchDirectSsrFragments(): Promise<DirectSsrFragments> {
+export async function fetchSsrUtenModulerFragments(): Promise<SsrUtenModulerFragments> {
   const url = new URL(ssrUtenModulerUrl);
-  const params = { ...decoratorParams, teamName };
-  Object.entries(params).forEach(([key, value]) =>
+  Object.entries(decoratorParams).forEach(([key, value]) =>
     url.searchParams.set(key, value),
   );
+  if (ssrUtenModulerTeamName)
+    url.searchParams.set("teamName", ssrUtenModulerTeamName);
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`DIRECT_SSR_HTTP_${response.status}`);
   const payload: unknown = await response.json();

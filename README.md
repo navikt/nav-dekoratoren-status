@@ -33,8 +33,9 @@ Statusappen er tilgjengelig kun for Nav-ansatte:
 | Prod  | `https://nav-dekoratoren-status.ansatt.nav.no`     | `http://nav-dekoratoren.personbruker` | `https://www.nav.no/dekoratoren`         |
 
 SSR-rutene bruker service discovery i riktig Nais-cluster. CSR-rutene kjører i nettleseren og
-bruker derfor Dekoratørens offentlige ingress for miljøet. SSR uten moduler sender eksplisitt
-`teamName=nav-dekoratoren-status.navno`; modulpakken identifiserer selv opprinnelsen.
+bruker derfor Dekoratørens offentlige ingress for miljøet. For SSR uten moduler bruker vi
+`teamName=nav-dekoratoren-status.navno` i kallet til `/ssr`. Modulpakken identifiserer selv
+opprinnelsen for SSR med moduler.
 
 ### Parametertester (`/parametre`)
 
@@ -86,18 +87,6 @@ cookies eller analytics. Den viser og logger bare statisk teknisk integrasjonsst
 brukerdata eller Dekoratørens auth-data leses, lagres eller logges.
 
 ## Lokal utvikling
-
-For `/ssr-uten-moduler` kan `SSR_UTEN_MODULER_TEAM_NAME` settes før appen startes på nytt:
-
-| Verdi      | Forventet i Dekoratørens logg for `/ssr`                                       |
-| ---------- | ------------------------------------------------------------------------------ |
-| Ikke satt  | `consumer: teamName: nav-dekoratoren-status.navno`, `requestType: ssr`                    |
-| `MittTeam` | «Ugyldig teamName …», deretter «Kunne ikke identifisere … SSR-forespørselen …» |
-| Tom streng | «Kunne ikke identifisere … SSR-forespørselen …»                                |
-
-Start appen med `SSR_UTEN_MODULER_TEAM_NAME=MittTeam pnpm dev` for ugyldig verdi, eller
-`SSR_UTEN_MODULER_TEAM_NAME='' pnpm dev` for manglende verdi. I dev må variabelen settes i appens miljø
-før appen startes på nytt.
 
 Installer private pakker med pnpm, GitHub Packages og en token med `read:packages`:
 

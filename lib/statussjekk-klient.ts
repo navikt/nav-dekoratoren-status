@@ -1,5 +1,5 @@
 import { buildPublicDecoratorUrl } from "./decorator-config";
-import { decoratorParams, teamName } from "./decorator-params";
+import { csrMedModulerTeamName, decoratorParams } from "./decorator-params";
 import { csrUtenModulerClientUrl } from "./csr-uten-moduler";
 import type { IntegrasjonsHelse } from "./statussjekk";
 
@@ -9,7 +9,7 @@ async function sjekkCsrMedModuler(): Promise<IntegrasjonsHelse> {
   try {
     const url = buildPublicDecoratorUrl("/env", {
       ...decoratorParams,
-      teamName,
+      teamName: csrMedModulerTeamName,
     });
     const response = await fetch(url, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP_${response.status}`);

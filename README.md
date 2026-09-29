@@ -32,10 +32,15 @@ Statusappen er tilgjengelig kun for Nav-ansatte:
 | Dev   | `https://nav-dekoratoren-status.ansatt.dev.nav.no` | `http://nav-dekoratoren.personbruker` | `https://dekoratoren.ekstern.dev.nav.no` |
 | Prod  | `https://nav-dekoratoren-status.ansatt.nav.no`     | `http://nav-dekoratoren.personbruker` | `https://www.nav.no/dekoratoren`         |
 
-SSR-rutene bruker service discovery i riktig Nais-cluster. CSR-rutene kjører i nettleseren og
-bruker derfor Dekoratørens offentlige ingress for miljøet. For SSR uten moduler bruker vi
-`teamName=nav-dekoratoren-status.navno` i kallet til `/ssr`. Modulpakken identifiserer selv
-opprinnelsen for SSR med moduler.
+- SSR-rutene bruker service discovery i riktig Nais-cluster.
+- CSR-rutene kjører i nettleseren og bruker derfor Dekoratørens offentlige ingress for miljøet.
+
+- For SSR uten moduler bruker vi `teamName=nav-dekoratoren-status-ssr.navno` i kallet til
+  `/ssr`.
+- For SSR med moduler setter modulpakken `teamName` fra `NAIS_APP_NAME` og `NAIS_NAMESPACE`.
+  I Nais blir verdien `nav-dekoratoren-status.personbruker`.
+- For CSR med moduler setter appen selv `teamName=nav-dekoratoren-status-csr.navno` i
+  parameterne til `injectDecoratorClientSide`. 
 
 ### Parametertester (`/parametre`)
 

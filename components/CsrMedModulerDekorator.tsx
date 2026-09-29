@@ -6,11 +6,13 @@ import { IntegrationPage } from "./IntegrationPage";
 import { decoratorParams } from "../lib/decorator-params";
 import { getDecoratorEnvironment } from "../lib/decorator-config";
 
+const teamName = "nav-dekoratoren-status-csr.navno";
+
 export function CsrMedModulerDekorator() {
   useEffect(() => {
     injectDecoratorClientSide({
       env: getDecoratorEnvironment(),
-      params: decoratorParams,
+      params: { ...decoratorParams, teamName },
     });
     return () => {
       document.getElementById("decorator-header")?.remove();
@@ -32,6 +34,7 @@ export function CsrMedModulerDekorator() {
       integrationVariant="csr-med-moduler"
       rendering="klient"
       transport="offentlig dev-ingress"
+      teamName={teamName}
       initialStatus="initializing"
       observe={async () => {
         await waitForDecorator();

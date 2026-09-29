@@ -4,7 +4,7 @@ import { ssrUtenModulerUrl } from "./decorator-config";
 export { ssrUtenModulerUrl };
 
 export const ssrUtenModulerTeamName =
-  process.env.SSR_UTEN_MODULER_TEAM_NAME ?? "nav-dekoratoren-status.navno";
+  process.env.SSR_UTEN_MODULER_TEAM_NAME ?? "nav-dekoratoren-status-ssr.navno";
 
 export type SsrUtenModulerFragments = {
   DECORATOR_HEAD_ASSETS: string;

@@ -56,10 +56,10 @@ describe("SSR uten moduler configuration", () => {
     return fetchMock.mock.calls[0][0] as URL;
   }
 
-  it("sends nav-dekoratoren-status.navno by default on SSR uten moduler", async () => {
+  it("sends nav-dekoratoren-status-ssr.navno by default on SSR uten moduler", async () => {
     const url = await requestedUrl();
     expect(url.searchParams.get("teamName")).toBe(
-      "nav-dekoratoren-status.navno",
+      "nav-dekoratoren-status-ssr.navno",
     );
     expect(url.searchParams.has("decoratorModulerVersion")).toBe(false);
   });

@@ -1,20 +1,22 @@
 import { IntegrationPage } from "../../components/IntegrationPage";
-import { teamName } from "../../lib/decorator-params";
-import { fetchDirectSsrFragments } from "../../lib/ssr-uten-moduler";
+import {
+  ssrUtenModulerTeamName,
+  fetchSsrUtenModulerFragments,
+} from "../../lib/ssr-uten-moduler";
 import { logTechnicalEvent } from "../../lib/technical-logger";
 
 function Fragment({ value }: { value: string }) {
   return <div dangerouslySetInnerHTML={{ __html: value }} />;
 }
 
-export default async function DirectSsrPage() {
+export default async function SsrUtenModulerPage() {
   logTechnicalEvent(
     "decorator_integration_started",
     "ssr-uten-moduler",
     "service-discovery",
   );
   try {
-    const fragments = await fetchDirectSsrFragments();
+    const fragments = await fetchSsrUtenModulerFragments();
     logTechnicalEvent(
       "decorator_ssr_rendered",
       "ssr-uten-moduler",
@@ -26,11 +28,11 @@ export default async function DirectSsrPage() {
         <Fragment value={fragments.DECORATOR_HEADER} />
         <IntegrationPage
           title="SSR uten moduler"
-          description="Dekoratøren er hentet direkte fra SSR-endepunktet."
+          description="Dekoratøren er hentet med SSR uten moduler."
           integrationVariant="ssr-uten-moduler"
           rendering="server"
           transport="service discovery"
-          teamName={teamName}
+          teamName={ssrUtenModulerTeamName}
         >
           <p data-testid="app-content">
             Dekoratøren ble rendret i første HTML-respons.
@@ -50,11 +52,11 @@ export default async function DirectSsrPage() {
     return (
       <IntegrationPage
         title="SSR uten moduler"
-        description="Dekoratøren kunne ikke hentes direkte."
+        description="Dekoratøren kunne ikke hentes med SSR uten moduler."
         integrationVariant="ssr-uten-moduler"
         rendering="server"
         transport="service discovery"
-        teamName={teamName}
+        teamName={ssrUtenModulerTeamName}
         initialStatus="error"
         errorMessage="Dekoratøren kunne ikke lastes"
       />

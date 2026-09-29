@@ -1,7 +1,7 @@
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 import { decoratorParams } from "./decorator-params";
 import { decoratorEnvironment } from "./decorator-config";
-import { fetchDirectSsrFragments } from "./ssr-uten-moduler";
+import { fetchSsrUtenModulerFragments } from "./ssr-uten-moduler";
 
 export type IntegrasjonsHelseStatus = "ok" | "feil";
 
@@ -42,10 +42,10 @@ async function sjekkSsrUtenModuler(): Promise<IntegrasjonsHelse> {
   const path = "ssr-uten-moduler";
   const label = "SSR uten moduler";
   try {
-    await fetchDirectSsrFragments();
+    await fetchSsrUtenModulerFragments();
     return ok(path, label);
   } catch {
-    return feil(path, label, "Kunne ikke hente /ssr-endepunktet direkte");
+    return feil(path, label, "Kunne ikke hente /ssr-endepunktet uten moduler");
   }
 }
 

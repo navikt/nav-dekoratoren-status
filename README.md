@@ -37,7 +37,8 @@ Statusappen er tilgjengelig kun for Nav-ansatte:
 
 - For SSR uten moduler bruker vi `teamName=nav-dekoratoren-status-ssr.navno` i kallet til
   `/ssr`.
-- For SSR med moduler identifiserer modulpakken selv opprinnelsen via NAIS, og blir satt til `teamName=nav-dekoratoren-status.navno`
+- For SSR med moduler setter modulpakken `teamName` fra `NAIS_APP_NAME` og `NAIS_NAMESPACE`.
+  I Nais blir verdien `nav-dekoratoren-status.personbruker`.
 - For CSR med moduler setter appen selv `teamName=nav-dekoratoren-status-csr.navno` i
   parameterne til `injectDecoratorClientSide`. 
 

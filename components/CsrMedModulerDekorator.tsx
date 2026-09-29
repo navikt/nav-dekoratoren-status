@@ -3,16 +3,17 @@
 import { injectDecoratorClientSide } from "@navikt/nav-dekoratoren-moduler";
 import { useEffect } from "react";
 import { IntegrationPage } from "./IntegrationPage";
-import { decoratorParams } from "../lib/decorator-params";
+import {
+  csrMedModulerTeamName,
+  decoratorParams,
+} from "../lib/decorator-params";
 import { getDecoratorEnvironment } from "../lib/decorator-config";
-
-const teamName = "nav-dekoratoren-status-csr.navno";
 
 export function CsrMedModulerDekorator() {
   useEffect(() => {
     injectDecoratorClientSide({
       env: getDecoratorEnvironment(),
-      params: { ...decoratorParams, teamName },
+      params: { ...decoratorParams, teamName: csrMedModulerTeamName },
     });
     return () => {
       document.getElementById("decorator-header")?.remove();
@@ -34,7 +35,7 @@ export function CsrMedModulerDekorator() {
       integrationVariant="csr-med-moduler"
       rendering="klient"
       transport="offentlig dev-ingress"
-      teamName={teamName}
+      teamName={csrMedModulerTeamName}
       initialStatus="initializing"
       observe={async () => {
         await waitForDecorator();

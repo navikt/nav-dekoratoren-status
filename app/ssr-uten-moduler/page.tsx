@@ -1,8 +1,8 @@
 import { IntegrationPage } from "../../components/IntegrationPage";
 import {
-  ssrUtenModulerTeamName,
   fetchSsrUtenModulerFragments,
 } from "../../lib/ssr-uten-moduler";
+import { ssrUtenModulerTeamName} from "../../lib/decorator-params";
 import { logTechnicalEvent } from "../../lib/technical-logger";
 
 function Fragment({ value }: { value: string }) {

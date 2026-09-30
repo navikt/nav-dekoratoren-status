@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   buildDirectCsrEnvironmentUrl,
   csrUtenModulerClientUrl,
@@ -9,7 +9,10 @@ import { getDirectDecoratorOrigin } from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 export function CsrUtenModulerDekorator() {
+  const [origin, setOrigin] = useState<string>();
+
   useEffect(() => {
+    setOrigin(window.location.origin);
     const header = document.createElement("div");
     header.id = "decorator-header";
     document.body.prepend(header);
@@ -45,6 +48,7 @@ export function CsrUtenModulerDekorator() {
         integrationVariant="csr-uten-moduler"
         rendering="klient/HTML-shell"
         transport="offentlig dev-ingress"
+        origin={origin}
         initialStatus="initializing"
         observe={async () => waitForDecorator()}
       >

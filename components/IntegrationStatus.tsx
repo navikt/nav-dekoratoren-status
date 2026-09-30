@@ -9,6 +9,7 @@ type Props = {
   rendering: string;
   transport: string;
   teamName?: string;
+  origin?: string;
   initialStatus?: IntegrationStatusValue;
   errorMessage?: string;
   observe?: () => Promise<void>;
@@ -25,6 +26,7 @@ export function IntegrationStatus({
   rendering,
   transport,
   teamName,
+  origin,
   initialStatus = "success",
   errorMessage,
   observe,
@@ -73,6 +75,12 @@ export function IntegrationStatus({
           <div>
             <dt>teamName</dt>
             <dd data-testid="integration-team-name">{teamName}</dd>
+          </div>
+        ) : null}
+        {origin ? (
+          <div>
+            <dt>HTTP Origin</dt>
+            <dd data-testid="integration-origin">{origin}</dd>
           </div>
         ) : null}
         <div>

@@ -11,6 +11,7 @@ type Props = {
   rendering: string;
   transport: string;
   teamName?: string;
+  origin?: string;
   children?: ReactNode;
   initialStatus?: IntegrationStatusValue;
   errorMessage?: string;

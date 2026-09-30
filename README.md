@@ -40,7 +40,9 @@ Statusappen er tilgjengelig kun for Nav-ansatte:
 - For SSR med moduler setter modulpakken `teamName` fra `NAIS_APP_NAME` og `NAIS_NAMESPACE`.
   I Nais blir verdien `nav-dekoratoren-status.personbruker`.
 - For CSR med moduler setter appen selv `teamName=nav-dekoratoren-status-csr.navno` i
-  parameterne til `injectDecoratorClientSide`. 
+  parameterne til `injectDecoratorClientSide`.
+- For CSR uten moduler henter nettleseren Dekoratøren via `/env` og sender HTTP-`Origin`
+  automatisk. Dekoratøren bruker denne headeren til konsumentlogging.
 
 ### Parametertester (`/parametre`)
 

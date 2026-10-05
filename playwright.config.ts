@@ -12,7 +12,8 @@ export default defineConfig({
   webServer: process.env.TEST_APP_URL
     ? undefined
     : {
-        command: "PORT=3101 pnpm start",
+        command:
+          "cp -R public .next/standalone/ && cp -R .next/static .next/standalone/.next/ && PORT=3101 node .next/standalone/server.js",
         url: "http://localhost:3101",
         reuseExistingServer: false,
       },

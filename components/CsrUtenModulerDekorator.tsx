@@ -5,7 +5,10 @@ import {
   buildDirectCsrEnvironmentUrl,
   csrUtenModulerClientUrl,
 } from "../lib/csr-uten-moduler";
-import { getDirectDecoratorOrigin } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDirectDecoratorOrigin,
+} from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 export function CsrUtenModulerDekorator() {
@@ -37,17 +40,14 @@ export function CsrUtenModulerDekorator() {
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href={`${getDirectDecoratorOrigin()}/css`}
-      />
+      <link rel="stylesheet" href={`${getDirectDecoratorOrigin()}/css`} />
       <div id="decorator-env" data-src={buildDirectCsrEnvironmentUrl()} />
       <IntegrationPage
         title="CSR uten moduler"
         description="Dekoratøren er satt inn manuelt med CSS, env og client.js."
         integrationVariant="csr-uten-moduler"
         rendering="klient/HTML-shell"
-        transport="offentlig dev-ingress"
+        transport={csrDecoratorTransport}
         origin={origin}
         initialStatus="initializing"
         observe={async () => waitForDecorator()}

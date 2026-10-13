@@ -6,7 +6,10 @@ import {
   setParams,
 } from "@navikt/nav-dekoratoren-moduler";
 import { decoratorParams } from "../lib/decorator-params";
-import { getDecoratorEnvironment } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDecoratorEnvProps,
+} from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 export function CsrSimpleDekorator() {
@@ -16,13 +19,13 @@ export function CsrSimpleDekorator() {
       description="Dekoratøren initialiseres i nettleseren med simple: true."
       integrationVariant="csr-med-moduler"
       rendering="klient"
-      transport="offentlig dev-ingress"
+      transport={csrDecoratorTransport}
       backHref="/parametre"
       backLabel="Tilbake"
       initialStatus="initializing"
       observe={async () => {
         await injectDecoratorClientSide({
-          env: getDecoratorEnvironment(),
+          ...getDecoratorEnvProps(),
           params: { ...decoratorParams, simple: true },
         });
         await ventPaDekoratoren();

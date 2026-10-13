@@ -1,9 +1,16 @@
 import { IntegrationPage } from "../../components/IntegrationPage";
-import {
-  fetchSsrUtenModulerFragments,
-} from "../../lib/ssr-uten-moduler";
-import { ssrUtenModulerTeamName} from "../../lib/decorator-params";
+import { fetchSsrUtenModulerFragments } from "../../lib/ssr-uten-moduler";
+import { ssrUtenModulerTeamName } from "../../lib/decorator-params";
 import { logTechnicalEvent } from "../../lib/technical-logger";
+import {
+  isLocalDecorator,
+  directDecoratorOrigin,
+  ssrDecoratorTransport,
+} from "../../lib/decorator-config";
+
+const logTransport = isLocalDecorator
+  ? directDecoratorOrigin
+  : "service-discovery";
 
 function Fragment({ value }: { value: string }) {
   return <div dangerouslySetInnerHTML={{ __html: value }} />;
@@ -13,14 +20,14 @@ export default async function SsrUtenModulerPage() {
   logTechnicalEvent(
     "decorator_integration_started",
     "ssr-uten-moduler",
-    "service-discovery",
+    logTransport,
   );
   try {
     const fragments = await fetchSsrUtenModulerFragments();
     logTechnicalEvent(
       "decorator_ssr_rendered",
       "ssr-uten-moduler",
-      "service-discovery",
+      logTransport,
     );
     return (
       <>
@@ -31,7 +38,7 @@ export default async function SsrUtenModulerPage() {
           description="Dekoratøren er hentet med SSR uten moduler."
           integrationVariant="ssr-uten-moduler"
           rendering="server"
-          transport="service discovery"
+          transport={ssrDecoratorTransport}
           teamName={ssrUtenModulerTeamName}
         >
           <p data-testid="app-content">
@@ -46,7 +53,7 @@ export default async function SsrUtenModulerPage() {
     logTechnicalEvent(
       "decorator_integration_failed",
       "ssr-uten-moduler",
-      "service-discovery",
+      logTransport,
       "SSR_DIRECT_FETCH",
     );
     return (
@@ -55,7 +62,7 @@ export default async function SsrUtenModulerPage() {
         description="Dekoratøren kunne ikke hentes med SSR uten moduler."
         integrationVariant="ssr-uten-moduler"
         rendering="server"
-        transport="service discovery"
+        transport={ssrDecoratorTransport}
         teamName={ssrUtenModulerTeamName}
         initialStatus="error"
         errorMessage="Dekoratøren kunne ikke lastes"

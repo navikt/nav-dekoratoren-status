@@ -7,7 +7,10 @@ import {
   type DecoratorFetchProps,
 } from "@navikt/nav-dekoratoren-moduler";
 import { decoratorParams } from "../lib/decorator-params";
-import { getDecoratorEnvironment } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDecoratorEnvProps,
+} from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 const testBreadcrumb = {
@@ -29,13 +32,13 @@ export function CsrKlikkCallbackDekorator() {
       description="Dekoratøren varsler appen via postMessage når en breadcrumb eller et språkvalg med handleInApp=true klikkes. Denne testen simulerer Dekoratørens egen postMessage-kontrakt for å verifisere at appens callback-registrering fungerer, uten at det krever et faktisk museklikk i den rendrede headeren/footeren."
       integrationVariant="csr-med-moduler"
       rendering="klient"
-      transport="offentlig dev-ingress"
+      transport={csrDecoratorTransport}
       backHref="/parametre"
       backLabel="Tilbake"
       initialStatus="initializing"
       observe={async () => {
         await injectDecoratorClientSide({
-          env: getDecoratorEnvironment(),
+          ...getDecoratorEnvProps(),
           params: {
             ...decoratorParams,
             breadcrumbs: [testBreadcrumb],

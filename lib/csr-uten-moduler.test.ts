@@ -1,7 +1,10 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { getDecoratorEnvironment } from "./decorator-config";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("CSR uten moduler URL", () => {
+  beforeEach(() => {
+    vi.stubEnv("NODE_ENV", "production");
+  });
+
   afterEach(() => {
     vi.unstubAllEnvs();
     vi.resetModules();
@@ -23,7 +26,8 @@ describe("CSR uten moduler URL", () => {
     );
   });
 
-  it("uses the production Dekoratøren environment on the prod ansatt ingress", () => {
+  it("uses the production Dekoratøren environment on the prod ansatt ingress", async () => {
+    const { getDecoratorEnvironment } = await import("./decorator-config");
     expect(
       getDecoratorEnvironment("nav-dekoratoren-status.ansatt.nav.no"),
     ).toBe("prod");

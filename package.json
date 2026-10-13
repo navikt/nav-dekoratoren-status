@@ -6,9 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint . && pnpm typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run lib/csr-uten-moduler.test.ts lib/ssr-uten-moduler.test.ts lib/statussjekk-klient.test.ts",
+    "test": "vitest run lib/csr-uten-moduler.test.ts lib/ssr-uten-moduler.test.ts lib/statussjekk-klient.test.ts lib/decorator-config.test.ts lib/decorator-local.test.ts",
     "test:e2e": "pnpm build && playwright test"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 import { decoratorParams } from "./decorator-params";
-import { decoratorEnvironment } from "./decorator-config";
+import { decoratorEnvProps, ssrDecoratorTransport } from "./decorator-config";
 import { fetchSsrUtenModulerFragments } from "./ssr-uten-moduler";
 
 export type IntegrasjonsHelseStatus = "ok" | "feil";
@@ -25,7 +25,7 @@ async function sjekkSsrMedModuler(): Promise<IntegrasjonsHelse> {
   const label = "SSR med moduler";
   try {
     await fetchDecoratorReact({
-      env: decoratorEnvironment,
+      ...decoratorEnvProps,
       params: decoratorParams,
     });
     return ok(path, label);
@@ -33,7 +33,7 @@ async function sjekkSsrMedModuler(): Promise<IntegrasjonsHelse> {
     return feil(
       path,
       label,
-      "Kunne ikke hente dekoratøren via service discovery",
+      `Kunne ikke hente dekoratøren via ${ssrDecoratorTransport}`,
     );
   }
 }

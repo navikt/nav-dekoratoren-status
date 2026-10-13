@@ -6,7 +6,10 @@ import {
   openChatbot,
 } from "@navikt/nav-dekoratoren-moduler";
 import { decoratorParams } from "../lib/decorator-params";
-import { getDecoratorEnvironment } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDecoratorEnvProps,
+} from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 export function CsrOpenChatbotDekorator() {
@@ -16,13 +19,13 @@ export function CsrOpenChatbotDekorator() {
       description="openChatbot() setter chatbotVisible=true og klikker på chatbotens knapp i den rendrede headeren/footeren, dersom den finnes."
       integrationVariant="csr-med-moduler"
       rendering="klient"
-      transport="offentlig dev-ingress"
+      transport={csrDecoratorTransport}
       backHref="/parametre"
       backLabel="Tilbake"
       initialStatus="initializing"
       observe={async () => {
         await injectDecoratorClientSide({
-          env: getDecoratorEnvironment(),
+          ...getDecoratorEnvProps(),
           params: { ...decoratorParams, chatbot: true, chatbotVisible: false },
         });
         await ventPaDekoratoren();

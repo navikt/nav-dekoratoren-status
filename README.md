@@ -22,6 +22,9 @@ fire integrasjonsmåtene mot Dekoratøren fungerer som forventet.
 
 Forsiden (`/`) viser en samlet statusoversikt for alle fire integrasjonene, med live helsesjekk
 mot Dekoratøren ved hvert sidelastet. Bruk denne til rask manuell verifikasjon.
+CSR uten moduler sjekker at `client.js` kan lastes med en script-preload uten å
+kjøre scriptet. Dette krever ikke CORS-headere, akkurat som integrasjonens vanlige
+script-tag. Helsesjekken verifiserer tilgjengelighet, ikke full rendering.
 
 ## Miljøer og tilgang
 
@@ -103,9 +106,26 @@ pnpm install
 pnpm dev
 ```
 
-Lokalt brukes den offentlige dev-ingressen for Dekoratøren. I Nais dev-gcp brukes intern service
-discovery for SSR uten moduler. `pnpm typecheck`, `pnpm test` og `pnpm test:e2e` er tilgjengelige
-for validering.
+Start Dekoratøren separat før du kjører `pnpm dev`. Standardporten er `8089`.
+For å bruke en annen port, legg dette i `.env.local` i prosjektroten:
+
+```dotenv
+LOCAL_DECORATOR_PORT=8090
+```
+
+Start utviklingsserveren på nytt etter endringen. `next.config.ts` gjør porten
+tilgjengelig både på serveren og i nettleseren; verdien er offentlig og skal ikke
+inneholde hemmeligheter. Porten må være et heltall mellom 1 og 65535.
+Next.js sitt utviklingsmiljø (`NODE_ENV=development`) velger automatisk den lokale
+Dekoratøren for alle fire integrasjonene, parametertestene og statussjekkene.
+Uten `.env.local` brukes standardporten. Hvis den lokale Dekoratøren ikke er tilgjengelig, viser
+appen feil; den faller ikke tilbake til dev-ingressen.
+
+`pnpm build` og `pnpm start` bruker fortsatt den offentlige dev-ingressen, eller
+prod-ingressen når `DECORATOR_ENV=prod`. I Nais brukes intern service discovery for SSR.
+`pnpm typecheck`, `pnpm test` og `pnpm test:e2e` er tilgjengelige for validering.
+`pnpm lint` kjører både ESLint og TypeScript-sjekken, slik at også typefeil og
+manglende moduler gir feil i kommandolinjen.
 
 ## CI og deploy
 

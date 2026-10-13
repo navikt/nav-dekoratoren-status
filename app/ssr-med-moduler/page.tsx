@@ -1,27 +1,38 @@
 import Script from "next/script";
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 import { IntegrationPage } from "../../components/IntegrationPage";
-import { decoratorParams, ssrMedModulerTeamName } from "../../lib/decorator-params";
-import { decoratorEnvironment } from "../../lib/decorator-config";
+import {
+  decoratorParams,
+  ssrMedModulerTeamName,
+} from "../../lib/decorator-params";
+import {
+  decoratorEnvProps,
+  isLocalDecorator,
+  directDecoratorOrigin,
+  ssrDecoratorTransport,
+} from "../../lib/decorator-config";
 import { logTechnicalEvent } from "../../lib/technical-logger";
 
 export const dynamic = "force-dynamic";
+const logTransport = isLocalDecorator
+  ? directDecoratorOrigin
+  : "service-discovery";
 
 export default async function SsrModulesPage() {
   logTechnicalEvent(
     "decorator_integration_started",
     "ssr-med-moduler",
-    "service-discovery",
+    logTransport,
   );
   try {
     const Decorator = await fetchDecoratorReact({
-      env: decoratorEnvironment,
+      ...decoratorEnvProps,
       params: decoratorParams,
     });
     logTechnicalEvent(
       "decorator_ssr_rendered",
       "ssr-med-moduler",
-      "service-discovery",
+      logTransport,
     );
     return (
       <>
@@ -32,7 +43,7 @@ export default async function SsrModulesPage() {
           description="Dekoratøren er hentet server-side med modulpakken."
           integrationVariant="ssr-med-moduler"
           rendering="server"
-          transport="service discovery"
+          transport={ssrDecoratorTransport}
           teamName={ssrMedModulerTeamName}
         >
           <p data-testid="app-content">
@@ -47,7 +58,7 @@ export default async function SsrModulesPage() {
     logTechnicalEvent(
       "decorator_integration_failed",
       "ssr-med-moduler",
-      "service-discovery",
+      logTransport,
       "SSR_MODULES_FETCH",
     );
     return (
@@ -56,7 +67,7 @@ export default async function SsrModulesPage() {
         description="Dekoratøren kunne ikke hentes server-side."
         integrationVariant="ssr-med-moduler"
         rendering="server"
-        transport="service discovery"
+        transport={ssrDecoratorTransport}
         teamName={ssrMedModulerTeamName}
         initialStatus="error"
         errorMessage="Dekoratøren kunne ikke lastes"

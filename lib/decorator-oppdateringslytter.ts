@@ -2,7 +2,7 @@ import {
   addDecoratorUpdateListener,
   getDecoratorVersionId,
 } from "@navikt/nav-dekoratoren-moduler/ssr";
-import { decoratorEnvironment } from "./decorator-config";
+import { decoratorEnvProps } from "./decorator-config";
 
 type Oppdateringsstatus = {
   lytterAktiv: boolean;
@@ -33,19 +33,14 @@ export async function startDekoratorOppdateringslytter() {
   }
 
   globalMedOppdateringsstatus.decoratorOppdateringslytterStartet = true;
-  const gjeldendeVersjon = await getDecoratorVersionId({
-    env: decoratorEnvironment,
-  });
+  const gjeldendeVersjon = await getDecoratorVersionId(decoratorEnvProps);
 
-  await addDecoratorUpdateListener(
-    { env: decoratorEnvironment },
-    (versjonId) => {
-      Object.assign(status(), {
-        sistOppdagetVersjon: versjonId,
-        sistOppdagetTidspunkt: new Date().toISOString(),
-      });
-    },
-  );
+  await addDecoratorUpdateListener(decoratorEnvProps, (versjonId) => {
+    Object.assign(status(), {
+      sistOppdagetVersjon: versjonId,
+      sistOppdagetTidspunkt: new Date().toISOString(),
+    });
+  });
 
   Object.assign(status(), {
     lytterAktiv: true,

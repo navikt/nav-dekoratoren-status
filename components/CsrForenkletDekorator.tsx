@@ -6,7 +6,10 @@ import {
   setParams,
 } from "@navikt/nav-dekoratoren-moduler";
 import { decoratorParams } from "../lib/decorator-params";
-import { getDecoratorEnvironment } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDecoratorEnvProps,
+} from "../lib/decorator-config";
 import { IntegrationPage } from "./IntegrationPage";
 
 type Parameter = "simpleHeader" | "simpleFooter";
@@ -43,13 +46,13 @@ export function CsrForenkletDekorator({ parameter }: Props) {
       description={details.description}
       integrationVariant="csr-med-moduler"
       rendering="klient"
-      transport="offentlig dev-ingress"
+      transport={csrDecoratorTransport}
       backHref="/parametre"
       backLabel="Tilbake"
       initialStatus="initializing"
       observe={async () => {
         await injectDecoratorClientSide({
-          env: getDecoratorEnvironment(),
+          ...getDecoratorEnvProps(),
           params: { ...decoratorParams, [parameter]: true },
         });
         await setParams({

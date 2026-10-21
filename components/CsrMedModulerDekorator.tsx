@@ -7,12 +7,15 @@ import {
   csrMedModulerTeamName,
   decoratorParams,
 } from "../lib/decorator-params";
-import { getDecoratorEnvironment } from "../lib/decorator-config";
+import {
+  csrDecoratorTransport,
+  getDecoratorEnvProps,
+} from "../lib/decorator-config";
 
 export function CsrMedModulerDekorator() {
   useEffect(() => {
     injectDecoratorClientSide({
-      env: getDecoratorEnvironment(),
+      ...getDecoratorEnvProps(),
       params: { ...decoratorParams, teamName: csrMedModulerTeamName },
     });
     return () => {
@@ -34,7 +37,7 @@ export function CsrMedModulerDekorator() {
       description="Dekoratøren er initialisert i nettleseren med modulpakken."
       integrationVariant="csr-med-moduler"
       rendering="klient"
-      transport="offentlig dev-ingress"
+      transport={csrDecoratorTransport}
       teamName={csrMedModulerTeamName}
       initialStatus="initializing"
       observe={async () => {

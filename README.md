@@ -131,12 +131,12 @@ manglende moduler gir feil i kommandolinjen.
 
 CI trenger GitHub-secretet `READER_TOKEN` for GitHub Packages.
 
-- **Deploy dev** kjører automatisk ved push til `main`, eller manuelt mot en valgfri branch, tag
-  eller SHA. Workflowen bygger og tester endringen, deployer til dev-gcp og venter på en
-  vellykket Nais-rollout.
-- **Deploy prod** starter automatisk når en push-utløst **Deploy dev** for `main` er grønn, og
-  deployer samme commit til prod-gcp. Manuelle devdeployinger trigger ikke prod. Workflowen kan
-  også startes manuelt med en eksisterende tag for rollback.
+- **Deploy prod** starter automatisk ved hver push til `main`, inkludert når en PR merges,
+  og deployer den aktuelle committen til prod-gcp. Den krever ikke en devdeploy først.
+- **Deploy dev** kjører kun ved manuell dispatch mot en valgfri branch, tag eller SHA
+  (standard: `main`). Den deployer til dev-gcp og trigger ikke prod.
+- Begge deploy-workflowene bygger og tester endringen før deploy og venter på en vellykket
+  Nais-rollout. Eventuelle beskyttelsesregler for GitHub-miljøet gjelder fortsatt.
 
 CI og deploy-workflowene kjører alle fire Playwright-integrasjonstestene på GitHub-hostede
 runnere mot en lokal bygget statusapp. Chromium installeres med
@@ -146,9 +146,10 @@ men verifiserer ikke ansatt-ingressen; rendering og interaksjon der verifiseres 
 En Naisjob-basert post-deploy-sjekk kan senere verifisere integrasjonene fra riktig
 Nais-cluster, uten å knytte en intern self-hosted runner til det offentlige repoet.
 
-Prod-promotering etter push til `main` er i dag gated av lokale tester og at `nais apply --wait`
-fullfører for dev. Det verifiserer at dev-podden er klar, men ikke brukerreisen gjennom
+Prod-deploy etter push til `main` er gated av testene i deploy-workflowen.
+`nais apply --wait` verifiserer at prod-podden er klar, men ikke brukerreisen gjennom
 ansatt-ingressen. Den dekkes manuelt inntil en Naisjob-basert post-deploy-sjekk er på plass.
 
-Rollback skjer ved å starte **Deploy prod** manuelt med forrige fungerende release-tag. Appen har
-ingen datamigreringer eller persistent tilstand. Alerting er bevisst ikke konfigurert ennå.
+Rollback gjøres ved å revertere endringen på `main`, slik at den vanlige prod-workflowen
+bygger og deployer den nye committen. Appen har ingen datamigreringer eller persistent tilstand.
+Alerting er bevisst ikke konfigurert ennå.

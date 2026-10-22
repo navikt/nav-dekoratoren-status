@@ -121,10 +121,10 @@ describe("production builds", () => {
     expect(config.isLocalDecorator).toBe(false);
     expect(config.getDecoratorEnvProps()).toEqual({ env: "dev" });
     expect(config.directDecoratorOrigin).toBe(
-      "https://dekoratoren.ekstern.dev.nav.no",
+      "https://dekoratoren-proxy.ekstern.dev.nav.no",
     );
     expect(config.ssrUtenModulerUrl).toBe(
-      "https://dekoratoren.ekstern.dev.nav.no/ssr",
+      "https://dekoratoren-proxy.ekstern.dev.nav.no/ssr",
     );
   });
 
@@ -149,7 +149,7 @@ describe("production builds", () => {
     expect(config.getDirectDecoratorOrigin()).toBe(
       env === "prod"
         ? "https://www.nav.no/dekoratoren"
-        : "https://dekoratoren.ekstern.dev.nav.no",
+        : "https://dekoratoren-proxy.ekstern.dev.nav.no",
     );
   });
 });

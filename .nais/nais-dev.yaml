@@ -32,3 +32,5 @@ spec:
       rules:
         - application: nav-dekoratoren
           namespace: personbruker
+        - application: nav-dekoratoren-proxy
+          namespace: personbruker

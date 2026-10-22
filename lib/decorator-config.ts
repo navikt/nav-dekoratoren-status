@@ -43,7 +43,7 @@ export function getDirectDecoratorOrigin() {
 
   return getDecoratorEnvironment() === "prod"
     ? "https://www.nav.no/dekoratoren"
-    : "https://dekoratoren.ekstern.dev.nav.no";
+    : "https://dekoratoren-proxy.ekstern.dev.nav.no";
 }
 
 export const directDecoratorOrigin = getDirectDecoratorOrigin();
@@ -61,7 +61,7 @@ export const csrDecoratorTransport = isLocalDecorator
   : "offentlig dev-ingress";
 
 export const ssrUtenModulerUrl = kjorerINais
-  ? "http://nav-dekoratoren.personbruker/ssr"
+  ? "http://nav-dekoratoren-proxy.personbruker/ssr"
   : `${directDecoratorOrigin}/ssr`;
 
 export function buildPublicDecoratorUrl(

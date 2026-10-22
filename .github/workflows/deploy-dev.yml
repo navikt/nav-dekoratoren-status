@@ -8,8 +8,6 @@ on:
         required: true
         default: main
         type: string
-  push:
-    branches: [main]
 
 jobs:
   deploy:
@@ -18,7 +16,7 @@ jobs:
       id-token: write
     uses: ./.github/workflows/deploy-environment.yml
     with:
-      ref: ${{ inputs.ref || github.sha }}
+      ref: ${{ inputs.ref }}
       environment_name: dev
       cluster: dev-gcp
       manifest_path: .nais/nais-dev.yaml

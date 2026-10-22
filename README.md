@@ -152,4 +152,4 @@ ansatt-ingressen. Den dekkes manuelt inntil en Naisjob-basert post-deploy-sjekk 
 
 Rollback gjøres ved å revertere endringen på `main`, slik at den vanlige prod-workflowen
 bygger og deployer den nye committen. Appen har ingen datamigreringer eller persistent tilstand.
-Alerting er bevisst ikke konfigurert ennå.
+Alerting er bevisst ikke konfigurert ennå

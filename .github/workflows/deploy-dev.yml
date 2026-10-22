@@ -2,12 +2,6 @@ name: Deploy dev
 
 on:
   workflow_dispatch:
-    inputs:
-      ref:
-        description: Branch, tag or SHA to deploy to dev
-        required: true
-        default: main
-        type: string
 
 jobs:
   deploy:
@@ -16,7 +10,7 @@ jobs:
       id-token: write
     uses: ./.github/workflows/deploy-environment.yml
     with:
-      ref: ${{ inputs.ref }}
+      ref: ${{ github.sha }}
       environment_name: dev
       cluster: dev-gcp
       manifest_path: .nais/nais-dev.yaml

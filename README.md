@@ -133,8 +133,8 @@ CI trenger GitHub-secretet `READER_TOKEN` for GitHub Packages.
 
 - **Deploy prod** starter automatisk ved hver push til `main`, inkludert når en PR merges,
   og deployer den aktuelle committen til prod-gcp. Den krever ikke en devdeploy først.
-- **Deploy dev** kjører kun ved manuell dispatch mot en valgfri branch, tag eller SHA
-  (standard: `main`). Den deployer til dev-gcp og trigger ikke prod.
+- **Deploy dev** kjører kun ved manuell dispatch. Velg branch under «Use workflow from»
+  i GitHub; workflowen deployer committen valgt ved dispatch til dev-gcp og trigger ikke prod.
 - Begge deploy-workflowene bygger og tester endringen før deploy og venter på en vellykket
   Nais-rollout. Eventuelle beskyttelsesregler for GitHub-miljøet gjelder fortsatt.
 

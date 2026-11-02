@@ -1,0 +1,10 @@
+name: Deploy to prod
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/build-deploy-prod.yml
+    permissions: { contents: read, id-token: write }
+    secrets: inherit

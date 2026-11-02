@@ -2,6 +2,9 @@
   "name": "nav-dekoratoren-status",
   "private": true,
   "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": "26"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

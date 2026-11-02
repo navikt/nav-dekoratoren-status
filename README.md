@@ -129,25 +129,39 @@ manglende moduler gir feil i kommandolinjen.
 
 ## CI og deploy
 
-CI trenger GitHub-secretet `READER_TOKEN` for GitHub Packages.
+Workflowene bruker de felles workflowene i [navno-ci](https://github.com/navikt/navno-ci)
+(`node-build.yml` og `nais-deploy.yml`) og actionene i
+[navno-actions](https://github.com/navikt/navno-actions). Node-versjonen styres av
+`engines.node` og pnpm-versjonen av `packageManager` i `package.json`.
+`READER_TOKEN` sendes videre med `secrets: inherit` for GitHub Packages.
 
-- **Deploy prod** starter automatisk ved hver push til `main`, inkludert når en PR merges,
-  og deployer den aktuelle committen til prod-gcp. Den krever ikke en devdeploy først.
-- **Deploy dev** kjører kun ved manuell dispatch. Velg branch under «Use workflow from»
-  i GitHub; workflowen deployer committen valgt ved dispatch til dev-gcp og trigger ikke prod.
-- Begge deploy-workflowene bygger og tester endringen før deploy og venter på en vellykket
-  Nais-rollout. Eventuelle beskyttelsesregler for GitHub-miljøet gjelder fortsatt.
+- **PR Checks** (`pr-checks.yml`) kjører på pull requests mot `main`: build, lint
+  (inkludert typecheck), enhetstester og Playwright, uten å bygge image.
+- **Deploy to prod** (`deploy.prod.yml`) starter automatisk ved hver push til `main`, inkludert
+  når en PR merges, og deployer den aktuelle committen til prod-gcp. Den krever ikke en
+  devdeploy først.
+- **Refresh base image** (`base-image-refresh.yml`) bygger og deployer `main` til prod på nytt
+  hver søndag kveld, slik at imaget får siste versjon av base-imaget. Den kan også kjøres manuelt,
+  men gjør bare noe fra `main`. Både denne og prod-deployen bruker `build-deploy-prod.yml`.
+- **Deploy to dev** (`deploy.dev.yml`) kjører kun ved manuell dispatch. Velg branch under
+  «Use workflow from» i GitHub; workflowen deployer committen valgt ved dispatch til dev-gcp og
+  trigger ikke prod.
+- **Dependabot lockfile fix** oppdaterer `pnpm-lock.yaml` på Dependabot-PR-er.
+- Alle deploy-workflowene bygger og tester endringen før deploy og venter på en vellykket
+  Nais-rollout. Deployen kjører i GitHub-miljøet `dev` eller `prod`, så eventuelle
+  beskyttelsesregler der gjelder fortsatt.
 
-CI og deploy-workflowene kjører alle fire Playwright-integrasjonstestene på GitHub-hostede
-runnere mot en lokal bygget statusapp. Chromium installeres med
-`pnpm exec playwright install --with-deps chromium`. Dette er trygt for det offentlige repoet,
-men verifiserer ikke ansatt-ingressen; rendering og interaksjon der verifiseres manuelt.
+CI og deploy-workflowene kjører alle Playwright-integrasjonstestene på GitHub-hostede
+runnere mot en lokalt bygget statusapp, inne i det offisielle Playwright-Docker-imaget
+(`navno-actions/run-playwright`). Prod-deployen kjører testene med `DECORATOR_ENV=prod`.
+Dette er trygt for det offentlige repoet, men verifiserer ikke ansatt-ingressen; rendering og
+interaksjon der verifiseres manuelt.
 
 En Naisjob-basert post-deploy-sjekk kan senere verifisere integrasjonene fra riktig
 Nais-cluster, uten å knytte en intern self-hosted runner til det offentlige repoet.
 
 Prod-deploy etter push til `main` er gated av testene i deploy-workflowen.
-`nais apply --wait` verifiserer at prod-podden er klar, men ikke brukerreisen gjennom
+Nais-deployen verifiserer at prod-podden er klar, men ikke brukerreisen gjennom
 ansatt-ingressen. Den dekkes manuelt inntil en Naisjob-basert post-deploy-sjekk er på plass.
 
 Rollback gjøres ved å revertere endringen på `main`, slik at den vanlige prod-workflowen

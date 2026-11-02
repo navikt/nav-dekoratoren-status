@@ -1,0 +1,18 @@
+name: PR Checks
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    uses: navikt/navno-ci/.github/workflows/node-build.yml@v1
+    with:
+      push-image: false
+      team: personbruker
+      # The build has already run, so call Playwright directly rather than `pnpm test:e2e`.
+      playwright: pnpm exec playwright test
+    secrets: inherit

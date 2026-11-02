@@ -12,8 +12,10 @@ export default defineConfig({
   webServer: process.env.TEST_APP_URL
     ? undefined
     : {
+        // HOSTNAME=0.0.0.0: the standalone server listens on $HOSTNAME, and CI runs
+        // Playwright in Docker, which sets HOSTNAME to the machine name, not localhost.
         command:
-          "cp -R public .next/standalone/ && cp -R .next/static .next/standalone/.next/ && PORT=3101 node .next/standalone/server.js",
+          "cp -R public .next/standalone/ && cp -R .next/static .next/standalone/.next/ && HOSTNAME=0.0.0.0 PORT=3101 node .next/standalone/server.js",
         url: "http://localhost:3101",
         reuseExistingServer: false,
       },
